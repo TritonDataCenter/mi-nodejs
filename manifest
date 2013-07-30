@@ -1,0 +1,7 @@
+name="nodejs"
+organization="Joyent"
+brand="Instance"
+version="13.1.0"
+description="A SmartOS 32-bit image with Node.js 0.10.5, npm 1.2.18, MongoDB 2.2.2 and other useful packages pre-installed. Ideal for Node.js applications."
+homepage="http://wiki.joyent.com/jpc2/SmartMachine+Node.JS";
+users="root admin mongodb"
