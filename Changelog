@@ -1,3 +1,11 @@
+nodejs-13.2.0
+* Base image is base-13.2.0 (2013Q2)
+* MongoDB version is 2.4.6
+* NodeJS version is 0.10.18
+* Npm version is 1.3.8
+* Quickbackup-mongodb version is 3.5
+* MMS agent version is 1.5.6
+
 nodejs-13.1.0
 * Base image is base-13.1.0 (2013Q1)
 * MongoDB version is 2.2.2
