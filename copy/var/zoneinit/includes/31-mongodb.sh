@@ -55,7 +55,7 @@ svcadm refresh quickbackup-mongodb
 
 # Disable MongoDB, clear logs, enable MongoDB
 log "stopping mongodb and clearing logs"
-svcadm disable pkgsrc/mongodb
+svcadm disable -s pkgsrc/mongodb
 rm /var/log/mongodb/mongodb.log
 touch /var/log/mongodb/mongodb.log
 chown -R mongodb:mongodb /var/log/mongodb

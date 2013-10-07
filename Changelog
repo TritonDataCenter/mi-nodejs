@@ -1,3 +1,6 @@
+nodejs-13.2.1
+* Base image is base-13.2.1 (2013Q2)
+
 nodejs-13.2.0
 * Base image is base-13.2.0 (2013Q2)
 * MongoDB version is 2.4.6
