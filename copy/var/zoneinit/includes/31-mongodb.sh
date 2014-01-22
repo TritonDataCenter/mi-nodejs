@@ -5,11 +5,11 @@ MONGODB_PW=$(od -An -N8 -x /dev/random | head -1 | tr -d ' ');
 
 # Get Quickbackup user and password
 log "getting qb_pw"
-QB_PW=$(od -An -N8 -x /dev/random | head -1 | sed 's/^[ \t]*//' | tr -d ' ');
+QB_PW=$(od -An -N8 -x /dev/random | head -1 | tr -d ' ');
 QB_US=qb-$(zonename | awk -F\- '{ print $5 }');
 
 # Start MongoDB
-log "starting the MongoDB instance"
+log "starting the pkgsrc/mongodb service"
 svcadm enable pkgsrc/mongodb
 
 # Wait for MongoDB to start
@@ -34,14 +34,14 @@ sleep 1
 
 # Configure MongoDB password
 log "Setting the MongoDB admin password"
-/opt/local/bin/mongo 127.0.0.1/admin --eval "db.addUser(\"admin\", \"${MONGODB_PW}\")" 2>/dev/null || \
+mongo 127.0.0.1/admin --eval "db.addUser(\"admin\", \"${MONGODB_PW}\")" 2>/dev/null || \
   ( log "ERROR MongoDB set admin pass failed to execute." && exit 31 )
 sleep 2;
 
 # Configure MongoDB Quickbackup user
-log "Setting the MongoDB qb password"
-/opt/local/bin/mongo 127.0.0.1/admin -uadmin -p${MONGODB_PW} --eval "db.addUser(\"${QB_US}\", \"${QB_PW}\")" 2>/dev/null || \
-  ( log "ERROR MongoDB set qb pass failed to execute." && exit 31 )
+log "Setting the MongoDB Quickbackup password"
+mongo 127.0.0.1/admin -uadmin -p${MONGODB_PW} --eval "db.addUser(\"${QB_US}\", \"${QB_PW}\")" 2>/dev/null || \
+  ( log "ERROR MongoDB set Quickbackup pass failed to execute." && exit 31 )
 
 # Configure MongoDB authentication
 log "putting auth in mongodb.conf and starting mongodb"
@@ -53,11 +53,6 @@ svccfg -s pkgsrc/quickbackup-mongodb setprop quickbackup/username = astring: ${Q
 svccfg -s pkgsrc/quickbackup-mongodb setprop quickbackup/password = astring: ${QB_PW}
 svcadm refresh quickbackup-mongodb
 
-# Disable MongoDB, clear logs, enable MongoDB
-log "stopping mongodb and clearing logs"
-svcadm disable -s pkgsrc/mongodb
-rm /var/log/mongodb/mongodb.log
-touch /var/log/mongodb/mongodb.log
-chown -R mongodb:mongodb /var/log/mongodb
-chown -R mongodb:mongodb /var/mongodb
-svcadm enable pkgsrc/mongodb
+# Clear MongoDB log
+log "clearing mongodb log"
+cat /dev/null > /var/log/mongodb/mongodb.log
